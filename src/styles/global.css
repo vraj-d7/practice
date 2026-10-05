@@ -10,6 +10,7 @@
 	--bg-soft: #f5f8fb;
 	--radius: 12px;
 	--shadow: 0 10px 30px rgba(15, 42, 74, 0.08);
+	--ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *,
@@ -21,6 +22,11 @@
 html {
 	scroll-behavior: smooth;
 	scroll-padding-top: 90px;
+}
+
+/* Lenis handles smoothing itself, so turn off the native version */
+html.lenis {
+	scroll-behavior: auto;
 }
 
 body {
@@ -226,15 +232,20 @@ h3 {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	padding: 2rem;
+	box-shadow: 0 1px 2px rgba(15, 42, 74, 0.03);
 	transition:
-		transform 0.25s,
-		box-shadow 0.25s,
-		border-color 0.25s;
+		opacity 0.7s var(--ease-smooth),
+		transform 0.5s var(--ease-smooth),
+		box-shadow 0.5s var(--ease-smooth),
+		border-color 0.5s var(--ease-smooth);
 }
 
-.card:hover {
-	transform: translateY(-4px);
-	box-shadow: var(--shadow);
+.card:hover,
+.card.visible:hover {
+	transform: translateY(-6px);
+	box-shadow:
+		0 4px 10px rgba(15, 42, 74, 0.04),
+		0 18px 40px rgba(15, 42, 74, 0.1);
 	border-color: transparent;
 }
 
@@ -248,13 +259,15 @@ h3 {
 	color: var(--accent);
 	margin-bottom: 1.25rem;
 	transition:
-		background 0.25s,
-		color 0.25s;
+		background 0.5s var(--ease-smooth),
+		color 0.5s var(--ease-smooth),
+		transform 0.5s var(--ease-smooth);
 }
 
 .card:hover .icon-box {
 	background: var(--accent);
 	color: #fff;
+	transform: scale(1.06);
 }
 
 .grid-3 {
@@ -312,6 +325,15 @@ h3 {
 .reveal.visible {
 	opacity: 1;
 	transform: none;
+}
+
+/* Keep the card hover transitions when a card also fades in on scroll */
+.card.reveal {
+	transition:
+		opacity 0.7s var(--ease-smooth),
+		transform 0.5s var(--ease-smooth),
+		box-shadow 0.5s var(--ease-smooth),
+		border-color 0.5s var(--ease-smooth);
 }
 
 @media (prefers-reduced-motion: reduce) {

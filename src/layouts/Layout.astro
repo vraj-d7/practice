@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import 'lenis/dist/lenis.css';
 import '../styles/global.css';
 
 interface Props {
@@ -36,6 +37,35 @@ const pageTitle = title ? `${title} | ${site.name}` : site.name;
 			<slot />
 		</main>
 		<Footer />
+
+		<script>
+			import Lenis from 'lenis';
+
+			// Smooth wheel and trackpad scrolling. Touch scrolling stays native, and
+			// people who prefer reduced motion get normal scrolling.
+			const lenis = new Lenis({
+				autoRaf: true,
+				lerp: 0.1,
+				anchors: true,
+			});
+
+			// Glide to same-page links written with a path, like "/services#customs".
+			document.addEventListener('click', (event) => {
+				const link = (event.target as Element).closest<HTMLAnchorElement>('a[href*="#"]');
+				if (!link || link.pathname !== location.pathname || !link.hash) return;
+				const target = document.querySelector(link.hash);
+				if (!target) return;
+				event.preventDefault();
+				lenis.scrollTo(target as HTMLElement);
+				history.pushState(null, '', link.hash);
+			});
+
+			// Pause smooth scrolling while the mobile menu is open.
+			new MutationObserver(() => {
+				if (document.body.classList.contains('menu-open')) lenis.stop();
+				else lenis.start();
+			}).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+		</script>
 
 		<script>
 			// Fade sections in as they scroll into view.
