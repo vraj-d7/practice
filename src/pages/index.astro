@@ -5,22 +5,26 @@ import { services } from '../data/site';
 
 const reasons = [
 	{
+		icon: 'globe',
 		title: 'One partner, end to end',
 		text: 'Sourcing, shipping, customs, and delivery managed by a single team.',
 	},
 	{
+		icon: 'mail',
 		title: 'Clear communication',
 		text: 'Regular updates on every shipment, so you always know where things stand.',
 	},
 	{
+		icon: 'shield',
 		title: 'Compliance first',
 		text: 'Careful attention to documentation and regulations at every border.',
 	},
 	{
+		icon: 'chart',
 		title: 'Built around you',
 		text: 'Solutions shaped to your products, timelines, and budget.',
 	},
-];
+] as const;
 
 const steps = [
 	{ title: 'Tell us your needs', text: 'Share what you want to source, ship, or sell.' },
@@ -128,15 +132,16 @@ const steps = [
 
 			<div class="why-list">
 				{
-					reasons.map((r) => (
+					reasons.map((r, i) => (
 						<div class="why-item reveal">
-							<span class="check">
-								<Icon name="check" size={18} />
-							</span>
-							<div>
-								<h3>{r.title}</h3>
-								<p>{r.text}</p>
+							<div class="why-top">
+								<span class="why-icon">
+									<Icon name={r.icon} size={24} />
+								</span>
+								<span class="why-num">{String(i + 1).padStart(2, '0')}</span>
 							</div>
+							<h3>{r.title}</h3>
+							<p>{r.text}</p>
 						</div>
 					))
 				}
@@ -447,34 +452,95 @@ const steps = [
 	}
 
 	.why-item {
-		display: flex;
-		gap: 1rem;
+		position: relative;
+		overflow: hidden;
 		background: #fff;
-		border-radius: var(--radius);
-		padding: 1.5rem;
+		border-radius: 16px;
+		padding: 1.75rem;
 		border: 1px solid var(--border);
+		box-shadow: 0 2px 8px rgba(15, 42, 74, 0.04);
+		transition:
+			opacity 0.7s ease,
+			transform 0.3s ease,
+			box-shadow 0.3s ease,
+			border-color 0.3s ease;
+	}
+
+	/* Accent bar that grows across the top on hover */
+	.why-item::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(90deg, var(--accent), #8cc2ff);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.35s ease;
+	}
+
+	/* Stagger the right-hand column for a less boxy layout */
+	.why-item:nth-child(even) {
+		margin-top: 2rem;
+		margin-bottom: -2rem;
+	}
+
+	.why-item.visible:hover {
+		transform: translateY(-6px);
+		border-color: transparent;
+		box-shadow: 0 18px 40px rgba(15, 42, 74, 0.12);
+	}
+
+	.why-item:hover::before {
+		transform: scaleX(1);
+	}
+
+	.why-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1.25rem;
+	}
+
+	.why-icon {
+		display: grid;
+		place-items: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 14px;
+		background: linear-gradient(135deg, var(--accent) 0%, var(--navy-light) 100%);
+		color: #fff;
+		box-shadow: 0 8px 18px rgba(31, 122, 224, 0.28);
+		transition: transform 0.3s ease;
+	}
+
+	.why-item:hover .why-icon {
+		transform: rotate(-6deg) scale(1.06);
+	}
+
+	.why-num {
+		font-size: 1.6rem;
+		font-weight: 800;
+		line-height: 1;
+		color: var(--accent-soft);
+		transition: color 0.3s ease;
+	}
+
+	.why-item:hover .why-num {
+		color: #b5d4f4;
 	}
 
 	.why-item h3 {
-		font-size: 1.05rem;
-		margin: 0 0 0.35rem;
+		font-size: 1.1rem;
+		margin: 0 0 0.5rem;
 	}
 
 	.why-item p {
 		margin: 0;
 		color: var(--text-muted);
 		font-size: 0.95rem;
-	}
-
-	.check {
-		flex-shrink: 0;
-		display: grid;
-		place-items: center;
-		width: 32px;
-		height: 32px;
-		border-radius: 50%;
-		background: var(--accent-soft);
-		color: var(--accent);
+		line-height: 1.6;
 	}
 
 	/* Steps */
@@ -542,6 +608,10 @@ const steps = [
 	@media (max-width: 600px) {
 		.hero {
 			padding: 3.5rem 0 4.5rem;
+		}
+
+		.why-item:nth-child(even) {
+			margin: 0;
 		}
 
 		.why-list,
