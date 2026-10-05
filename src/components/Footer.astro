@@ -1,0 +1,130 @@
+---
+import { navLinks, services, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container footer-grid">
+		<div class="footer-brand">
+			<a href="/" class="footer-logo">{site.name}</a>
+			<p>{site.description}</p>
+		</div>
+
+		<div>
+			<h4>Company</h4>
+			<ul>
+				{
+					navLinks.map((link) => (
+						<li>
+							<a href={link.href}>{link.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<div>
+			<h4>Services</h4>
+			<ul>
+				{
+					services.slice(0, 4).map((s) => (
+						<li>
+							<a href={`/services#${s.slug}`}>{s.title}</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<div>
+			<h4>Contact</h4>
+			<ul>
+				<li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+				<li>{site.phone}</li>
+				<li>{site.address}</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container footer-bottom">
+		<p>&copy; {year} {site.name}. All rights reserved.</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--navy);
+		color: rgba(255, 255, 255, 0.72);
+		padding-top: 4rem;
+	}
+
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1.3fr 1.3fr;
+		gap: 2.5rem;
+		padding-bottom: 3rem;
+	}
+
+	.footer-logo {
+		display: inline-block;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #fff;
+		margin-bottom: 0.75rem;
+	}
+
+	.footer-brand p {
+		max-width: 320px;
+		margin: 0;
+	}
+
+	h4 {
+		color: #fff;
+		font-size: 0.95rem;
+		margin: 0 0 1rem;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	a {
+		transition: color 0.2s;
+	}
+
+	ul a:hover {
+		color: #fff;
+	}
+
+	.footer-bottom {
+		border-top: 1px solid rgba(255, 255, 255, 0.12);
+		padding-top: 1.5rem;
+		padding-bottom: 1.5rem;
+		font-size: 0.9rem;
+	}
+
+	.footer-bottom p {
+		margin: 0;
+	}
+
+	@media (max-width: 820px) {
+		.footer-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.footer-brand {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.footer-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,17 +1,560 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/site';
 
+const reasons = [
+	{
+		title: 'One partner, end to end',
+		text: 'Sourcing, shipping, customs, and delivery managed by a single team.',
+	},
+	{
+		title: 'Clear communication',
+		text: 'Regular updates on every shipment, so you always know where things stand.',
+	},
+	{
+		title: 'Compliance first',
+		text: 'Careful attention to documentation and regulations at every border.',
+	},
+	{
+		title: 'Built around you',
+		text: 'Solutions shaped to your products, timelines, and budget.',
+	},
+];
+
+const steps = [
+	{ title: 'Tell us your needs', text: 'Share what you want to source, ship, or sell.' },
+	{ title: 'Get a tailored plan', text: 'We propose routes, partners, timelines, and costs.' },
+	{ title: 'We handle the details', text: 'Paperwork, freight, and customs taken care of.' },
+	{ title: 'Delivered & tracked', text: 'Your goods arrive with updates along the way.' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	<section class="hero">
+		<div class="container hero-grid">
+			<div class="hero-copy">
+				<span class="eyebrow">International trade, simplified</span>
+				<h1>Connecting your business to <span class="highlight">global markets</span></h1>
+				<p>
+					Edge Global Trade helps companies source products, move goods across borders, and
+					reach new customers worldwide — with one reliable partner managing every step.
+				</p>
+				<div class="hero-actions">
+					<a href="/contact" class="btn btn-primary">
+						Get a quote <Icon name="arrow" size={18} />
+					</a>
+					<a href="/services" class="btn btn-ghost">Explore services</a>
+				</div>
+			</div>
+
+			<div class="hero-visual" aria-hidden="true">
+				<div class="route-card">
+					<div class="route-head">
+						<span class="dot live"></span> Shipment in transit
+					</div>
+					<div class="route">
+						<div class="stop">
+							<span class="stop-dot"></span>
+							<strong>Origin</strong>
+							<small>Packed & dispatched</small>
+						</div>
+						<div class="route-line"><span class="route-progress"></span></div>
+						<div class="stop">
+							<span class="stop-dot"></span>
+							<strong>Customs</strong>
+							<small>Cleared</small>
+						</div>
+						<div class="route-line"><span class="route-progress delay"></span></div>
+						<div class="stop">
+							<span class="stop-dot pending"></span>
+							<strong>Destination</strong>
+							<small>On the way</small>
+						</div>
+					</div>
+				</div>
+				<div class="float-card float-a">
+					<Icon name="ship" size={20} /> Sea · Air · Land
+				</div>
+				<div class="float-card float-b">
+					<Icon name="shield" size={20} /> Compliance handled
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head reveal">
+				<span class="eyebrow">What we do</span>
+				<h2>Services that keep trade moving</h2>
+				<p>From finding the right supplier to delivering at the destination, we cover the full journey.</p>
+			</div>
+
+			<div class="grid-3">
+				{
+					services.slice(0, 3).map((s) => (
+						<a href={`/services#${s.slug}`} class="card service-card reveal">
+							<div class="icon-box">
+								<Icon name={s.icon} />
+							</div>
+							<h3>{s.title}</h3>
+							<p>{s.summary}</p>
+							<span class="card-link">
+								Learn more <Icon name="arrow" size={16} />
+							</span>
+						</a>
+					))
+				}
+			</div>
+
+			<div class="center reveal">
+				<a href="/services" class="btn btn-primary">View all services</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-soft">
+		<div class="container why-grid">
+			<div class="why-copy reveal">
+				<span class="eyebrow">Why Edge Global Trade</span>
+				<h2>A trade partner you can rely on</h2>
+				<p>
+					International trade involves many moving parts. We bring them together so your
+					business can grow in new markets with confidence and less complexity.
+				</p>
+				<a href="/about" class="btn btn-primary">About us</a>
+			</div>
+
+			<div class="why-list">
+				{
+					reasons.map((r) => (
+						<div class="why-item reveal">
+							<span class="check">
+								<Icon name="check" size={18} />
+							</span>
+							<div>
+								<h3>{r.title}</h3>
+								<p>{r.text}</p>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head reveal">
+				<span class="eyebrow">How it works</span>
+				<h2>Four simple steps</h2>
+				<p>A clear process from first conversation to final delivery.</p>
+			</div>
+
+			<ol class="steps">
+				{
+					steps.map((step, i) => (
+						<li class="step reveal">
+							<span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+							<h3>{step.title}</h3>
+							<p>{step.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="section cta-section">
+		<div class="container">
+			<div class="cta-band reveal">
+				<h2>Ready to take your business global?</h2>
+				<p>Tell us what you need to move, and we'll build a plan to get it there.</p>
+				<a href="/contact" class="btn btn-white">Contact our team</a>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.hero {
+		position: relative;
+		overflow: hidden;
+		background:
+			radial-gradient(circle at 85% 20%, rgba(31, 122, 224, 0.12), transparent 45%),
+			linear-gradient(180deg, #fff 0%, var(--bg-soft) 100%);
+		padding: 5.5rem 0 6.5rem;
+	}
+
+	.hero-grid {
+		display: grid;
+		grid-template-columns: 1.1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.hero h1 {
+		font-size: clamp(2.4rem, 5vw, 3.6rem);
+		margin: 0 0 1.25rem;
+	}
+
+	.highlight {
+		color: var(--accent);
+	}
+
+	.hero-copy p {
+		font-size: 1.15rem;
+		color: var(--text-muted);
+		max-width: 540px;
+		margin: 0 0 2.25rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.btn-ghost {
+		border-color: var(--border);
+		color: var(--navy);
+		background: #fff;
+	}
+
+	.btn-ghost:hover {
+		border-color: var(--navy);
+	}
+
+	/* Hero visual */
+	.hero-visual {
+		position: relative;
+		padding: 2rem 0;
+	}
+
+	.route-card {
+		background: #fff;
+		border-radius: 16px;
+		box-shadow: 0 20px 50px rgba(15, 42, 74, 0.12);
+		padding: 2rem;
+		animation: rise 0.8s ease both;
+	}
+
+	.route-head {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 600;
+		color: var(--navy);
+		margin-bottom: 2rem;
+	}
+
+	.dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: #22a06b;
+	}
+
+	.dot.live {
+		animation: pulse 1.8s infinite;
+	}
+
+	.route {
+		display: grid;
+		grid-template-columns: auto 1fr auto 1fr auto;
+		align-items: start;
+		gap: 0.75rem;
+	}
+
+	.stop {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.2rem;
+		font-size: 0.9rem;
+	}
+
+	.stop small {
+		color: var(--text-muted);
+		font-size: 0.78rem;
+	}
+
+	.stop-dot {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: var(--accent);
+		border: 4px solid var(--accent-soft);
+		margin-bottom: 0.4rem;
+	}
+
+	.stop-dot.pending {
+		background: #fff;
+		border-color: var(--border);
+	}
+
+	.route-line {
+		position: relative;
+		height: 3px;
+		margin-top: 8px;
+		background: var(--border);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.route-progress {
+		position: absolute;
+		inset: 0;
+		background: var(--accent);
+		transform-origin: left;
+		animation: fill 1.4s 0.4s ease both;
+	}
+
+	.route-progress.delay {
+		animation: fill-half 1.4s 1.6s ease both;
+	}
+
+	.float-card {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: #fff;
+		border-radius: 10px;
+		box-shadow: var(--shadow);
+		padding: 0.7rem 1rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--navy);
+	}
+
+	.float-card :global(svg) {
+		color: var(--accent);
+	}
+
+	.float-a {
+		top: -0.5rem;
+		right: 1.5rem;
+		animation: float 5s ease-in-out infinite;
+	}
+
+	.float-b {
+		bottom: -0.5rem;
+		left: 1.5rem;
+		animation: float 5s 1.5s ease-in-out infinite;
+	}
+
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+	}
+
+	@keyframes fill {
+		from {
+			transform: scaleX(0);
+		}
+	}
+
+	@keyframes fill-half {
+		from {
+			transform: scaleX(0);
+		}
+		to {
+			transform: scaleX(0.55);
+		}
+	}
+
+	@keyframes pulse {
+		0% {
+			box-shadow: 0 0 0 0 rgba(34, 160, 107, 0.5);
+		}
+		100% {
+			box-shadow: 0 0 0 10px rgba(34, 160, 107, 0);
+		}
+	}
+
+	@keyframes float {
+		50% {
+			transform: translateY(-8px);
+		}
+	}
+
+	/* Services preview */
+	.service-card {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.service-card h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.2rem;
+	}
+
+	.service-card p {
+		margin: 0 0 1.5rem;
+		color: var(--text-muted);
+		flex: 1;
+	}
+
+	.card-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-weight: 600;
+		color: var(--accent);
+	}
+
+	.card-link :global(svg) {
+		transition: transform 0.2s;
+	}
+
+	.service-card:hover .card-link :global(svg) {
+		transform: translateX(4px);
+	}
+
+	.center {
+		text-align: center;
+		margin-top: 3rem;
+	}
+
+	/* Why us */
+	.why-grid {
+		display: grid;
+		grid-template-columns: 1fr 1.2fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.why-copy h2 {
+		font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+		margin: 0 0 1rem;
+	}
+
+	.why-copy p {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		margin: 0 0 2rem;
+	}
+
+	.why-list {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem;
+	}
+
+	.why-item {
+		display: flex;
+		gap: 1rem;
+		background: #fff;
+		border-radius: var(--radius);
+		padding: 1.5rem;
+		border: 1px solid var(--border);
+	}
+
+	.why-item h3 {
+		font-size: 1.05rem;
+		margin: 0 0 0.35rem;
+	}
+
+	.why-item p {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+
+	.check {
+		flex-shrink: 0;
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	/* Steps */
+	.steps {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+		counter-reset: step;
+	}
+
+	.step {
+		position: relative;
+		padding: 2rem 1.5rem;
+		border-top: 3px solid var(--border);
+		transition: border-color 0.3s;
+	}
+
+	.step:hover {
+		border-color: var(--accent);
+	}
+
+	.step-num {
+		display: block;
+		font-size: 2rem;
+		font-weight: 800;
+		color: var(--accent);
+		opacity: 0.35;
+		margin-bottom: 0.5rem;
+		transition: opacity 0.3s;
+	}
+
+	.step:hover .step-num {
+		opacity: 1;
+	}
+
+	.step h3 {
+		font-size: 1.1rem;
+		margin: 0 0 0.5rem;
+	}
+
+	.step p {
+		margin: 0;
+		color: var(--text-muted);
+	}
+
+	.cta-section {
+		padding-top: 0;
+	}
+
+	@media (max-width: 900px) {
+		.hero-grid,
+		.why-grid {
+			grid-template-columns: 1fr;
+			gap: 3rem;
+		}
+
+		.steps {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.hero {
+			padding: 3.5rem 0 4.5rem;
+		}
+
+		.why-list,
+		.steps {
+			grid-template-columns: 1fr;
+		}
+
+		.route-card {
+			padding: 1.5rem 1rem;
+		}
+
+		.float-card {
+			font-size: 0.8rem;
+		}
+	}
+</style>

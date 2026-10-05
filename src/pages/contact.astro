@@ -1,0 +1,384 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { services, site } from '../data/site';
+
+const details = [
+	{ icon: 'mail', label: 'Email', value: site.email, href: `mailto:${site.email}` },
+	{ icon: 'phone', label: 'Phone', value: site.phone, href: `tel:${site.phone.replace(/\s/g, '')}` },
+	{ icon: 'pin', label: 'Office', value: site.address },
+	{ icon: 'clock', label: 'Hours', value: site.hours },
+] as const;
+---
+
+<Layout
+	title="Contact"
+	description="Contact Edge Global Trade to discuss your sourcing, shipping, or trade needs."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Contact us</span>
+			<h1>Let’s talk about your trade needs</h1>
+			<p>Send us a message and our team will get back to you within one business day.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container contact-grid">
+			<aside class="contact-info reveal">
+				<h2>Get in touch</h2>
+				<p>Whether you have a question or are ready for a quote, we’re here to help.</p>
+
+				<ul>
+					{
+						details.map((d) => (
+							<li>
+								<span class="info-icon">
+									<Icon name={d.icon} size={20} />
+								</span>
+								<div>
+									<small>{d.label}</small>
+									{'href' in d ? <a href={d.href}>{d.value}</a> : <span>{d.value}</span>}
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</aside>
+
+			<div class="form-card reveal">
+				<form id="contact-form" novalidate>
+					<div class="row">
+						<div class="field">
+							<label for="name">Full name *</label>
+							<input id="name" name="name" type="text" autocomplete="name" required />
+							<span class="error" aria-live="polite"></span>
+						</div>
+						<div class="field">
+							<label for="company">Company</label>
+							<input id="company" name="company" type="text" autocomplete="organization" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="field">
+							<label for="email">Email *</label>
+							<input id="email" name="email" type="email" autocomplete="email" required />
+							<span class="error" aria-live="polite"></span>
+						</div>
+						<div class="field">
+							<label for="phone">Phone</label>
+							<input id="phone" name="phone" type="tel" autocomplete="tel" />
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="service">Service of interest</label>
+						<select id="service" name="service">
+							<option value="">Select a service</option>
+							{services.map((s) => <option value={s.slug}>{s.title}</option>)}
+							<option value="other">Something else</option>
+						</select>
+					</div>
+
+					<div class="field">
+						<label for="message">Message *</label>
+						<textarea
+							id="message"
+							name="message"
+							rows="5"
+							required
+							minlength="10"
+							maxlength="1000"
+							placeholder="Tell us about your goods, origin, destination, and timeline."></textarea>
+						<div class="field-foot">
+							<span class="error" aria-live="polite"></span>
+							<span class="counter" id="counter">0 / 1000</span>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary submit">
+						Send message <Icon name="arrow" size={18} />
+					</button>
+				</form>
+
+				<div class="success" id="form-success" hidden>
+					<span class="success-icon"><Icon name="check" size={32} /></span>
+					<h3>Thank you!</h3>
+					<p>Your message has been received. We’ll be in touch soon.</p>
+					<button type="button" class="btn btn-ghost" id="send-another">Send another message</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<script>
+	const form = document.getElementById('contact-form') as HTMLFormElement;
+	const success = document.getElementById('form-success') as HTMLElement;
+	const message = form.elements.namedItem('message') as HTMLTextAreaElement;
+	const counter = document.getElementById('counter') as HTMLElement;
+
+	const messages: Record<string, string> = {
+		name: 'Please enter your name.',
+		email: 'Please enter a valid email address.',
+		message: 'Please write a message of at least 10 characters.',
+	};
+
+	function validate(field: HTMLInputElement | HTMLTextAreaElement) {
+		const error = field.closest('.field')?.querySelector('.error');
+		if (!error) return true;
+		const valid = field.value.trim() !== '' && field.checkValidity();
+		field.classList.toggle('invalid', !valid);
+		field.setAttribute('aria-invalid', String(!valid));
+		error.textContent = valid ? '' : messages[field.name];
+		return valid;
+	}
+
+	const required = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]');
+
+	required.forEach((field) => {
+		field.addEventListener('blur', () => validate(field));
+		field.addEventListener('input', () => {
+			if (field.classList.contains('invalid')) validate(field);
+		});
+	});
+
+	message.addEventListener('input', () => {
+		counter.textContent = `${message.value.length} / 1000`;
+	});
+
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const results = Array.from(required).map(validate);
+		if (results.includes(false)) {
+			form.querySelector<HTMLElement>('.invalid')?.focus();
+			return;
+		}
+
+		// TODO: send the form data to a real backend or form service.
+		form.hidden = true;
+		success.hidden = false;
+		form.reset();
+		counter.textContent = '0 / 1000';
+	});
+
+	document.getElementById('send-another')?.addEventListener('click', () => {
+		success.hidden = true;
+		form.hidden = false;
+	});
+</script>
+
+<style>
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr 1.6fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.contact-info h2 {
+		font-size: 1.8rem;
+		margin: 0 0 0.75rem;
+	}
+
+	.contact-info > p {
+		color: var(--text-muted);
+		margin: 0 0 2rem;
+	}
+
+	.contact-info ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.contact-info li {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		transition: border-color 0.2s;
+	}
+
+	.contact-info li:hover {
+		border-color: var(--accent);
+	}
+
+	.contact-info small {
+		display: block;
+		color: var(--text-muted);
+		font-size: 0.8rem;
+	}
+
+	.contact-info a,
+	.contact-info span {
+		font-weight: 600;
+		color: var(--navy);
+		word-break: break-word;
+	}
+
+	.contact-info a:hover {
+		color: var(--accent);
+	}
+
+	.info-icon {
+		flex-shrink: 0;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 10px;
+		background: var(--accent-soft);
+		color: var(--accent) !important;
+	}
+
+	.form-card {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		box-shadow: var(--shadow);
+		padding: 2.5rem;
+	}
+
+	form {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem;
+	}
+
+	.field {
+		display: grid;
+		gap: 0.4rem;
+	}
+
+	label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--navy);
+	}
+
+	input,
+	select,
+	textarea {
+		font: inherit;
+		width: 100%;
+		padding: 0.8rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background: var(--bg-soft);
+		color: var(--text);
+		transition:
+			border-color 0.2s,
+			background 0.2s,
+			box-shadow 0.2s;
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	input:focus,
+	select:focus,
+	textarea:focus {
+		outline: none;
+		background: #fff;
+		border-color: var(--accent);
+		box-shadow: 0 0 0 4px var(--accent-soft);
+	}
+
+	.invalid {
+		border-color: #d64545;
+		background: #fff;
+	}
+
+	.error {
+		min-height: 1.1em;
+		font-size: 0.85rem;
+		color: #d64545;
+	}
+
+	.field-foot {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.counter {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+
+	.submit {
+		justify-self: start;
+	}
+
+	.success {
+		text-align: center;
+		padding: 2rem 0;
+		animation: pop 0.4s ease;
+	}
+
+	.success-icon {
+		display: inline-grid;
+		place-items: center;
+		width: 72px;
+		height: 72px;
+		border-radius: 50%;
+		background: #e3f5ec;
+		color: #22a06b;
+		margin-bottom: 1rem;
+	}
+
+	.success h3 {
+		font-size: 1.6rem;
+		margin: 0 0 0.5rem;
+	}
+
+	.success p {
+		color: var(--text-muted);
+		margin: 0 0 1.5rem;
+	}
+
+	.btn-ghost {
+		border-color: var(--border);
+		color: var(--navy);
+		background: #fff;
+	}
+
+	.btn-ghost:hover {
+		border-color: var(--navy);
+	}
+
+	@keyframes pop {
+		from {
+			opacity: 0;
+			transform: scale(0.96);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.row {
+			grid-template-columns: 1fr;
+		}
+
+		.form-card {
+			padding: 1.5rem;
+		}
+	}
+</style>

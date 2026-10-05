@@ -1,0 +1,275 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import type { IconName } from '../data/site';
+
+const values: { icon: IconName; title: string; text: string }[] = [
+	{
+		icon: 'shield',
+		title: 'Integrity',
+		text: 'We are honest about costs, timelines, and risks — no surprises.',
+	},
+	{
+		icon: 'chart',
+		title: 'Reliability',
+		text: 'We do what we say, and we keep you informed at every stage.',
+	},
+	{
+		icon: 'globe',
+		title: 'Global mindset',
+		text: 'We understand that every market has its own rules, culture, and opportunities.',
+	},
+	{
+		icon: 'search',
+		title: 'Attention to detail',
+		text: 'Small details in trade matter. We check the paperwork so you don’t have to.',
+	},
+];
+---
+
+<Layout
+	title="About"
+	description="Learn about Edge Global Trade — our mission, our values, and how we help businesses trade internationally."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">About us</span>
+			<h1>Making global trade simple</h1>
+			<p>
+				We help businesses of every size take part in international trade with confidence,
+				clarity, and a partner they can trust.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container story-grid">
+			<div class="reveal">
+				<span class="eyebrow">Who we are</span>
+				<h2>A trading partner focused on your growth</h2>
+				<p>
+					Edge Global Trade was founded on a simple idea: international trade should not be
+					complicated for the businesses that depend on it. Behind every shipment are suppliers,
+					carriers, customs authorities, and regulations — and keeping them all aligned takes
+					experience and care.
+				</p>
+				<p>
+					We bring those pieces together. Whether you are importing your first container or
+					expanding into a new region, our team manages the details so you can focus on running
+					your business.
+				</p>
+			</div>
+
+			<div class="mission-cards reveal">
+				<div class="mission-card">
+					<h3>Our mission</h3>
+					<p>
+						To connect businesses with global markets through dependable, transparent, and
+						efficient trade services.
+					</p>
+				</div>
+				<div class="mission-card dark">
+					<h3>Our vision</h3>
+					<p>
+						A world where any business, large or small, can trade across borders as easily as it
+						trades at home.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-soft">
+		<div class="container">
+			<div class="section-head reveal">
+				<span class="eyebrow">Our values</span>
+				<h2>What guides our work</h2>
+				<p>The principles behind every shipment, every partnership, and every conversation.</p>
+			</div>
+
+			<div class="values-grid">
+				{
+					values.map((v) => (
+						<div class="card reveal">
+							<div class="icon-box">
+								<Icon name={v.icon} />
+							</div>
+							<h3>{v.title}</h3>
+							<p>{v.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container approach reveal">
+			<div>
+				<span class="eyebrow">Our approach</span>
+				<h2>Partnership, not just paperwork</h2>
+			</div>
+			<ul class="approach-list">
+				<li>
+					<Icon name="check" size={20} />
+					<span>We take time to understand your products, customers, and goals.</span>
+				</li>
+				<li>
+					<Icon name="check" size={20} />
+					<span>We recommend practical routes and partners that fit your budget.</span>
+				</li>
+				<li>
+					<Icon name="check" size={20} />
+					<span>We stay in touch throughout, with one point of contact for your account.</span>
+				</li>
+				<li>
+					<Icon name="check" size={20} />
+					<span>We review every shipment to keep improving speed and cost.</span>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="section cta-section">
+		<div class="container">
+			<div class="cta-band reveal">
+				<h2>Let’s build something global together</h2>
+				<p>Talk to our team about your trade goals and how we can help.</p>
+				<a href="/contact" class="btn btn-white">Get in touch</a>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.story-grid {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.story-grid h2,
+	.approach h2 {
+		font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+		margin: 0 0 1.25rem;
+	}
+
+	.story-grid p {
+		color: var(--text-muted);
+		font-size: 1.05rem;
+	}
+
+	.mission-cards {
+		display: grid;
+		gap: 1.25rem;
+	}
+
+	.mission-card {
+		border-radius: var(--radius);
+		padding: 2rem;
+		background: var(--accent-soft);
+		border-left: 4px solid var(--accent);
+	}
+
+	.mission-card.dark {
+		background: var(--navy);
+		border-color: #8cc2ff;
+	}
+
+	.mission-card h3 {
+		margin: 0 0 0.5rem;
+	}
+
+	.mission-card p {
+		margin: 0;
+		color: var(--text-muted);
+	}
+
+	.mission-card.dark h3 {
+		color: #fff;
+	}
+
+	.mission-card.dark p {
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.values-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+	}
+
+	.values-grid h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.15rem;
+	}
+
+	.values-grid p {
+		margin: 0;
+		color: var(--text-muted);
+	}
+
+	.approach {
+		display: grid;
+		grid-template-columns: 1fr 1.3fr;
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.approach-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.approach-list li {
+		display: flex;
+		gap: 1rem;
+		align-items: flex-start;
+		padding: 1.25rem 1.5rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		font-size: 1.05rem;
+		transition:
+			border-color 0.2s,
+			transform 0.2s;
+	}
+
+	.approach-list li:hover {
+		border-color: var(--accent);
+		transform: translateX(4px);
+	}
+
+	.approach-list :global(svg) {
+		flex-shrink: 0;
+		color: var(--accent);
+		margin-top: 3px;
+	}
+
+	.cta-section {
+		padding-top: 0;
+	}
+
+	@media (max-width: 1000px) {
+		.values-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.story-grid,
+		.approach {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.values-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
