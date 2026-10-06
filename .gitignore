@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Windows folder settings
+desktop.ini
+
+# Original full-size photos (optimized copies live in src/assets)
+/images/

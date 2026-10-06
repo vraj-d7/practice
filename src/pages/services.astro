@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
 import { services } from '../data/site';
 ---
 
@@ -69,15 +70,11 @@ import { services } from '../data/site';
 
 	<Faq />
 
-	<section class="section cta-section">
-		<div class="container">
-			<div class="cta-band reveal">
-				<h2>Not sure which service you need?</h2>
-				<p>Tell us about your goals and we’ll recommend the right approach.</p>
-				<a href="/contact" class="btn btn-white">Request a quote</a>
-			</div>
-		</div>
-	</section>
+	<CtaBanner
+		title="Not sure which service you need?"
+		text="Tell us about your goals and we’ll recommend the right approach."
+		button={{ href: '/contact', label: 'Request a quote' }}
+	/>
 </Layout>
 
 <script>

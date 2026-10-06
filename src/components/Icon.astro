@@ -2,7 +2,7 @@
 import type { IconName } from '../data/site';
 
 interface Props {
-	name: IconName | 'check' | 'mail' | 'phone' | 'pin' | 'clock' | 'arrow';
+	name: IconName | 'check' | 'mail' | 'phone' | 'pin' | 'clock' | 'arrow' | 'tag';
 	size?: number;
 }
 
@@ -23,6 +23,7 @@ const paths: Record<Props['name'], string> = {
 	pin: '<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
 	clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 	arrow: '<path d="M5 12h14"/><path d="M13 6l6 6l-6 6"/>',
+	tag: '<path d="M3 4.5V11l9.3 9.3a1.6 1.6 0 0 0 2.3 0l5.7-5.7a1.6 1.6 0 0 0 0-2.3L11 3H4.5A1.5 1.5 0 0 0 3 4.5z"/><circle cx="7.5" cy="7.5" r="1.4"/>',
 };
 ---
 

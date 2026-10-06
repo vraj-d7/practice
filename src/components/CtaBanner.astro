@@ -1,0 +1,213 @@
+---
+import { Image } from 'astro:assets';
+import containersRedStack from '../assets/cta/containers-red-stack.webp';
+import containersWall from '../assets/cta/containers-wall.webp';
+import portShip from '../assets/cta/port-ship.webp';
+import containersYard from '../assets/cta/containers-yard.webp';
+
+interface Props {
+	title: string;
+	text: string;
+	button: { href: string; label: string };
+}
+
+const { title, text, button } = Astro.props;
+
+// Two overlapping photos on each side of the text.
+const photos = [
+	{ src: containersRedStack, className: 'photo-left-top' },
+	{ src: containersWall, className: 'photo-left-bottom' },
+	{ src: portShip, className: 'photo-right-top' },
+	{ src: containersYard, className: 'photo-right-bottom' },
+];
+---
+
+<section class="section cta-section">
+	<div class="container">
+		<div class="cta-band reveal">
+			<div class="cta-photos" aria-hidden="true">
+				{
+					photos.map((photo, i) => (
+						<div class={`cta-photo ${photo.className}`} style={`--n: ${i}`}>
+							<Image
+								src={photo.src}
+								alt=""
+								width={440}
+								widths={[220, 440]}
+								sizes="220px"
+								loading="lazy"
+							/>
+						</div>
+					))
+				}
+			</div>
+
+			<div class="cta-content">
+				<h2>{title}</h2>
+				<p>{text}</p>
+				<a href={button.href} class="btn btn-primary">{button.label}</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* No background of its own: the banner sits on the page, with photos either side.
+	   --pw/--ph are the photo width and its height at a 4:3 shape. */
+	.cta-band {
+		--pw: clamp(150px, 15vw, 210px);
+		--ph: calc(var(--pw) * 0.75);
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* Just tall enough for a pair of overlapping photos */
+		min-height: calc(var(--ph) * 1.7);
+		padding: 0 2rem;
+		text-align: center;
+		/* Keep the grid from spilling sideways on narrow screens */
+		overflow-x: clip;
+	}
+
+	.cta-content {
+		position: relative;
+		z-index: 2;
+		max-width: 520px;
+	}
+
+	/* Grid that sits behind the text only, strongest in the middle and fading out
+	   towards the edges */
+	.cta-content::before {
+		content: '';
+		position: absolute;
+		inset: -4.5rem -6rem;
+		z-index: -1;
+		pointer-events: none;
+		background-image:
+			linear-gradient(rgba(15, 42, 74, 0.09) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(15, 42, 74, 0.09) 1px, transparent 1px);
+		background-size: 48px 48px;
+		background-position: center;
+		-webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+		mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+	}
+
+	.cta-band h2 {
+		font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+		margin: 0 0 0.75rem;
+	}
+
+	.cta-band p {
+		margin: 0 auto 2rem;
+		color: var(--text-muted);
+	}
+
+	/* Photos. Each pair is centred vertically, with the lower photo overlapping the
+	   bottom 30% of the upper one at any size. */
+	.cta-photo {
+		position: absolute;
+		width: var(--pw);
+		aspect-ratio: 4 / 3;
+		border-radius: 20px;
+		overflow: hidden;
+		box-shadow: 0 14px 34px rgba(15, 42, 74, 0.16);
+		opacity: 0;
+	}
+
+	.cta-photo :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.photo-left-top {
+		left: 7%;
+		top: calc(50% - var(--ph) * 0.85);
+		z-index: 1;
+	}
+
+	.photo-left-bottom {
+		left: 3%;
+		top: calc(50% - var(--ph) * 0.15);
+		z-index: 2;
+	}
+
+	.photo-right-top {
+		right: 3%;
+		top: calc(50% - var(--ph) * 0.85);
+		z-index: 1;
+	}
+
+	.photo-right-bottom {
+		right: 7%;
+		top: calc(50% - var(--ph) * 0.15);
+		z-index: 2;
+	}
+
+	/* Once the banner has faded in, the photos pop in one by one, then float gently */
+	.cta-band:global(.visible) .cta-photo {
+		animation:
+			cta-photo-in 0.8s var(--ease-smooth) calc(0.35s + var(--n) * 0.15s) both,
+			cta-photo-float 6s ease-in-out calc(1.4s + var(--n) * 0.7s) infinite;
+	}
+
+	@keyframes cta-photo-in {
+		from {
+			opacity: 0;
+			transform: translateY(20px) scale(0.9);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@keyframes cta-photo-float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+
+	/* Smaller screens: there's no room beside the text, so the photos sit in a row above it */
+	@media (max-width: 960px) {
+		.cta-band {
+			flex-direction: column;
+			min-height: 0;
+			padding: 0;
+		}
+
+		/* A smaller grid area so it stays around the text on narrow screens */
+		.cta-content::before {
+			inset: -2.5rem -1.25rem;
+			background-size: 36px 36px;
+		}
+
+		.cta-photos {
+			display: flex;
+			justify-content: center;
+			gap: 0.75rem;
+			width: 100%;
+			margin-bottom: 2rem;
+		}
+
+		/* Four equal photos that shrink to fit the row, up to 120px each */
+		.cta-photo {
+			position: relative;
+			inset: auto;
+			flex: 1 1 0;
+			min-width: 0;
+			width: auto;
+			max-width: 120px;
+			border-radius: 14px;
+		}
+
+		/* A gentle up-and-down stagger so the row isn't flat */
+		.cta-photo:nth-child(even) {
+			margin-top: 1.25rem;
+		}
+	}
+</style>

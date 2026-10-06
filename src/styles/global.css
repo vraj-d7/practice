@@ -309,27 +309,6 @@ h3 {
 	}
 }
 
-/* Call-to-action banner */
-.cta-band {
-	background: linear-gradient(135deg, var(--accent) 0%, var(--navy-light) 100%);
-	border-radius: 20px;
-	padding: 4rem 2rem;
-	text-align: center;
-	color: #fff;
-}
-
-.cta-band h2 {
-	color: #fff;
-	font-size: clamp(1.7rem, 3.5vw, 2.3rem);
-	margin: 0 0 0.75rem;
-}
-
-.cta-band p {
-	margin: 0 auto 2rem;
-	max-width: 520px;
-	color: rgba(255, 255, 255, 0.85);
-}
-
 /* Scroll reveal */
 /* Set --i on items in a group (0, 1, 2…) to make them fade in one after another */
 .reveal {

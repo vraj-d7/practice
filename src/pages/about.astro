@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import CtaBanner from '../components/CtaBanner.astro';
 import type { IconName } from '../data/site';
 
 const values: { icon: IconName; title: string; text: string }[] = [
@@ -62,17 +63,17 @@ const values: { icon: IconName; title: string; text: string }[] = [
 
 			<div class="mission-cards reveal">
 				<div class="mission-card">
-					<h3>Our mission</h3>
+					<h3>Our Mission</h3>
 					<p>
-						To connect businesses with global markets through dependable, transparent, and
-						efficient trade services.
+						To bridge the gap between Indian manufacturers and global buyers, providing quality
+						products and exceptional service that drives mutual success.
 					</p>
 				</div>
 				<div class="mission-card dark">
-					<h3>Our vision</h3>
+					<h3>Our Vision</h3>
 					<p>
-						A world where any business, large or small, can trade across borders as easily as it
-						trades at home.
+						To become the most trusted and preferred import-export partner, recognized globally for
+						our reliability, quality, and customer-centric approach.
 					</p>
 				</div>
 			</div>
@@ -130,15 +131,11 @@ const values: { icon: IconName; title: string; text: string }[] = [
 		</div>
 	</section>
 
-	<section class="section cta-section">
-		<div class="container">
-			<div class="cta-band reveal">
-				<h2>Let’s build something global together</h2>
-				<p>Talk to our team about your trade goals and how we can help.</p>
-				<a href="/contact" class="btn btn-white">Get in touch</a>
-			</div>
-		</div>
-	</section>
+	<CtaBanner
+		title="Let’s build something global together"
+		text="Talk to our team about your trade goals and how we can help."
+		button={{ href: '/contact', label: 'Get in touch' }}
+	/>
 </Layout>
 
 <style>

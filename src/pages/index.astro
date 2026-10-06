@@ -2,27 +2,28 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
 import ScrollRevealText from '../components/ScrollRevealText.astro';
 import { services } from '../data/site';
 
 const reasons = [
 	{
-		icon: 'globe',
+		icon: 'shield',
 		title: 'Quality Assurance',
 		text: 'Rigorous quality control processes to ensure all products consistently meet international standards and client expectations.',
 	},
 	{
-		icon: 'mail',
+		icon: 'tag',
 		title: 'Competitive Pricing',
 		text: 'Competitive market pricing supported by transparent practices and fair, trustworthy business dealings.',
 	},
 	{
-		icon: 'shield',
+		icon: 'globe',
 		title: 'Global Logistics',
 		text: 'Seamless shipping and logistics management for efficient and hassle-free delivery to destinations worldwide.',
 	},
 	{
-		icon: 'chart',
+		icon: 'box',
 		title: 'Reliable Supply',
 		text: 'Consistent and timely delivery ensured through strong coordination and reliable, long-term partnerships.',
 	},
@@ -187,15 +188,11 @@ const steps = [
 
 	<Faq />
 
-	<section class="section cta-section">
-		<div class="container">
-			<div class="cta-band reveal">
-				<h2>Ready to take your business global?</h2>
-				<p>Tell us what you need to move, and we'll build a plan to get it there.</p>
-				<a href="/contact" class="btn btn-white">Contact our team</a>
-			</div>
-		</div>
-	</section>
+	<CtaBanner
+		title="Ready to take your business global?"
+		text="Tell us what you need to move, and we'll build a plan to get it there."
+		button={{ href: '/contact', label: 'Contact our team' }}
+	/>
 </Layout>
 
 <style>
