@@ -71,14 +71,30 @@ const pageTitle = title ? `${title} | ${site.name}` : site.name;
 
 		<script>
 			// Fade sections in as they scroll into view.
-			const items = document.querySelectorAll('.reveal');
+			const items = document.querySelectorAll<HTMLElement>('.reveal');
+
+			// Once a staggered item has appeared, drop its delay (--i) so hover effects
+			// that use the same transitions respond straight away.
+			const clearStagger = (el: HTMLElement) => {
+				if (!el.style.getPropertyValue('--i')) return;
+				const onEnd = (event: TransitionEvent) => {
+					// Ignore transitions bubbling up from child elements.
+					if (event.target !== el) return;
+					el.style.setProperty('--i', '0');
+					el.removeEventListener('transitionend', onEnd);
+				};
+				el.addEventListener('transitionend', onEnd);
+			};
+
 			if ('IntersectionObserver' in window) {
 				const observer = new IntersectionObserver(
 					(entries) => {
 						entries.forEach((entry) => {
 							if (entry.isIntersecting) {
-								entry.target.classList.add('visible');
-								observer.unobserve(entry.target);
+								const el = entry.target as HTMLElement;
+								el.classList.add('visible');
+								clearStagger(el);
+								observer.unobserve(el);
 							}
 						});
 					},

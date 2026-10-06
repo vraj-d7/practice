@@ -6,12 +6,12 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
 	<div class="container footer-grid">
-		<div class="footer-brand">
+		<div class="footer-brand reveal" style="--i: 0">
 			<a href="/" class="footer-logo">{site.name}</a>
 			<p>{site.description}</p>
 		</div>
 
-		<div>
+		<div class="reveal" style="--i: 1">
 			<h4>Company</h4>
 			<ul>
 				{
@@ -24,7 +24,7 @@ const year = new Date().getFullYear();
 			</ul>
 		</div>
 
-		<div>
+		<div class="reveal" style="--i: 2">
 			<h4>Services</h4>
 			<ul>
 				{
@@ -37,7 +37,7 @@ const year = new Date().getFullYear();
 			</ul>
 		</div>
 
-		<div>
+		<div class="reveal" style="--i: 3">
 			<h4>Contact</h4>
 			<ul>
 				<li><a href={`mailto:${site.email}`}>{site.email}</a></li>
@@ -47,13 +47,15 @@ const year = new Date().getFullYear();
 		</div>
 	</div>
 
-	<div class="container footer-bottom">
+	<div class="container footer-bottom reveal" style="--i: 4">
 		<p>&copy; {year} {site.name}. All rights reserved.</p>
 	</div>
 </footer>
 
 <style>
+	/* Clip so the items sliding up into place can't stretch the page below the footer */
 	.site-footer {
+		overflow: clip;
 		background: var(--navy);
 		color: rgba(255, 255, 255, 0.72);
 		padding-top: 4rem;

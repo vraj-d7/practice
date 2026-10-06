@@ -2,28 +2,29 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import ScrollRevealText from '../components/ScrollRevealText.astro';
 import { services } from '../data/site';
 
 const reasons = [
 	{
 		icon: 'globe',
-		title: 'One partner, end to end',
-		text: 'Sourcing, shipping, customs, and delivery managed by a single team.',
+		title: 'Quality Assurance',
+		text: 'Rigorous quality control processes to ensure all products consistently meet international standards and client expectations.',
 	},
 	{
 		icon: 'mail',
-		title: 'Clear communication',
-		text: 'Regular updates on every shipment, so you always know where things stand.',
+		title: 'Competitive Pricing',
+		text: 'Competitive market pricing supported by transparent practices and fair, trustworthy business dealings.',
 	},
 	{
 		icon: 'shield',
-		title: 'Compliance first',
-		text: 'Careful attention to documentation and regulations at every border.',
+		title: 'Global Logistics',
+		text: 'Seamless shipping and logistics management for efficient and hassle-free delivery to destinations worldwide.',
 	},
 	{
 		icon: 'chart',
-		title: 'Built around you',
-		text: 'Solutions shaped to your products, timelines, and budget.',
+		title: 'Reliable Supply',
+		text: 'Consistent and timely delivery ensured through strong coordination and reliable, long-term partnerships.',
 	},
 ] as const;
 
@@ -94,6 +95,12 @@ const steps = [
 		</div>
 	</section>
 
+	<ScrollRevealText
+		link={{ href: '/about', label: 'About Us' }}
+		lead="Edge Global Trade"
+		text="remains well connected Export and Import Company offering quality industrial products sourced from India and elsewhere to international buyers. We offer cutting edge services in terms of sourcing products meeting ASTM and international standards with competitive terms and long term engagement commitments."
+	/>
+
 	<section class="section">
 		<div class="container">
 			<div class="section-head reveal">
@@ -127,20 +134,20 @@ const steps = [
 
 	<section class="section section-soft">
 		<div class="container why-grid">
-			<div class="why-copy reveal">
-				<span class="eyebrow">Why Edge Global Trade</span>
-				<h2>A trade partner you can rely on</h2>
-				<p>
+			<div class="why-copy">
+				<span class="eyebrow reveal" style="--i: 0">Why Edge Global Trade</span>
+				<h2 class="reveal" style="--i: 1">A trade partner you can rely on</h2>
+				<p class="reveal" style="--i: 2">
 					International trade involves many moving parts. We bring them together so your
 					business can grow in new markets with confidence and less complexity.
 				</p>
-				<a href="/about" class="btn btn-primary">About us</a>
+				<a href="/about" class="btn btn-primary reveal" style="--i: 3">About us</a>
 			</div>
 
 			<div class="why-list">
 				{
 					reasons.map((r, i) => (
-						<div class="why-item reveal">
+						<div class="why-item reveal" style={`--i: ${i}`}>
 							<div class="why-top">
 								<span class="why-icon">
 									<Icon name={r.icon} size={24} />
@@ -167,7 +174,7 @@ const steps = [
 			<ol class="steps">
 				{
 					steps.map((step, i) => (
-						<li class="step reveal">
+						<li class="step reveal" style={`--i: ${i}`}>
 							<span class="step-num">{String(i + 1).padStart(2, '0')}</span>
 							<h3>{step.title}</h3>
 							<p>{step.text}</p>
@@ -198,7 +205,7 @@ const steps = [
 		background:
 			radial-gradient(circle at 85% 20%, rgba(31, 122, 224, 0.12), transparent 45%),
 			linear-gradient(180deg, #fff 0%, var(--bg-soft) 100%);
-		padding: 5.5rem 0 6.5rem;
+		padding: 5.5rem 0 6rem;
 	}
 
 	.hero-grid {
@@ -215,6 +222,24 @@ const steps = [
 
 	.highlight {
 		color: var(--accent);
+	}
+
+	/* Page-load entrance: the label, headline, intro, and buttons rise in one after another */
+	.hero-copy > * {
+		animation: rise 0.9s var(--ease-smooth) both;
+	}
+
+	.hero-copy > :nth-child(1) {
+		animation-delay: 0.05s;
+	}
+	.hero-copy > :nth-child(2) {
+		animation-delay: 0.15s;
+	}
+	.hero-copy > :nth-child(3) {
+		animation-delay: 0.25s;
+	}
+	.hero-copy > :nth-child(4) {
+		animation-delay: 0.35s;
 	}
 
 	.hero-copy p {
@@ -251,7 +276,7 @@ const steps = [
 		border-radius: 16px;
 		box-shadow: 0 20px 50px rgba(15, 42, 74, 0.12);
 		padding: 2rem;
-		animation: rise 0.8s ease both;
+		animation: rise 0.9s 0.45s var(--ease-smooth) both;
 	}
 
 	.route-head {
@@ -360,16 +385,37 @@ const steps = [
 		color: var(--accent);
 	}
 
+	/* The tags pop in after the main card has risen in (it finishes at ~1.35s): the top
+	   one drops down from above, then the bottom one rises from below. Once in place,
+	   they start their gentle floating loop. */
 	.float-a {
 		top: -0.5rem;
 		right: 1.5rem;
-		animation: float 5s ease-in-out infinite;
+		animation:
+			tag-in-down 0.7s var(--ease-smooth) 1.1s both,
+			float 5s ease-in-out 1.8s infinite;
 	}
 
 	.float-b {
 		bottom: -0.5rem;
 		left: 1.5rem;
-		animation: float 5s 1.5s ease-in-out infinite;
+		animation:
+			tag-in-up 0.7s var(--ease-smooth) 1.3s both,
+			float 5s ease-in-out 3.3s infinite;
+	}
+
+	@keyframes tag-in-down {
+		from {
+			opacity: 0;
+			transform: translateY(-14px) scale(0.92);
+		}
+	}
+
+	@keyframes tag-in-up {
+		from {
+			opacity: 0;
+			transform: translateY(14px) scale(0.92);
+		}
 	}
 
 	@keyframes rise {
@@ -481,6 +527,22 @@ const steps = [
 		margin: 0 0 2rem;
 	}
 
+	/* Same rise-in as the top banner, one item after another, triggered on scroll.
+	   The button's own hover transitions are kept in the list. */
+	.why-copy > .reveal {
+		transition:
+			opacity 0.9s var(--ease-smooth) calc(var(--i, 0) * 0.1s),
+			transform 0.9s var(--ease-smooth) calc(var(--i, 0) * 0.1s),
+			background 0.2s,
+			color 0.2s,
+			box-shadow 0.2s;
+	}
+
+	/* Keep the button's hover lift once it has faded in */
+	.why-copy > .btn.visible:hover {
+		transform: translateY(-2px);
+	}
+
 	.why-list {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -495,9 +557,10 @@ const steps = [
 		padding: 1.75rem;
 		border: 1px solid var(--border);
 		box-shadow: 0 2px 8px rgba(15, 42, 74, 0.04);
+		/* Fade up on scroll, each card a little after the one before it */
 		transition:
-			opacity 0.7s ease,
-			transform 0.3s ease,
+			opacity 0.7s var(--ease-smooth) calc(var(--i, 0) * 0.15s),
+			transform 0.6s var(--ease-smooth) calc(var(--i, 0) * 0.15s),
 			box-shadow 0.3s ease,
 			border-color 0.3s ease;
 	}
@@ -594,7 +657,11 @@ const steps = [
 		position: relative;
 		padding: 2rem 1.5rem;
 		border-top: 3px solid var(--border);
-		transition: border-color 0.3s;
+		/* Fade up on scroll, each card a little after the one before it */
+		transition:
+			opacity 0.8s var(--ease-smooth) calc(var(--i, 0) * 0.15s),
+			transform 0.8s var(--ease-smooth) calc(var(--i, 0) * 0.15s),
+			border-color 0.3s;
 	}
 
 	.step:hover {

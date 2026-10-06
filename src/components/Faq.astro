@@ -13,10 +13,14 @@ import { faqs } from '../data/site';
 			</p>
 		</div>
 
-		<div class="faq-list reveal">
+		<div class="faq-list">
 			{
 				faqs.map((f, i) => (
-					<details class:list={['faq', { 'is-open': i === 0 }]} open={i === 0}>
+					<details
+						class:list={['faq', 'reveal', { 'is-open': i === 0 }]}
+						open={i === 0}
+						style={`--i: ${i}`}
+					>
 						<summary>
 							{f.q}
 							<span class="faq-icon" aria-hidden="true" />
@@ -119,7 +123,10 @@ import { faqs } from '../data/site';
 		background: #fff;
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
+		/* Fade up on scroll, each question a little after the one above it */
 		transition:
+			opacity 0.7s var(--ease-smooth) calc(var(--i, 0) * 0.08s),
+			transform 0.7s var(--ease-smooth) calc(var(--i, 0) * 0.08s),
 			border-color 0.45s var(--ease-smooth),
 			box-shadow 0.45s var(--ease-smooth);
 	}
