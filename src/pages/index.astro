@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
 import { services } from '../data/site';
 
 const reasons = [
@@ -176,6 +177,8 @@ const steps = [
 			</ol>
 		</div>
 	</section>
+
+	<Faq />
 
 	<section class="section cta-section">
 		<div class="container">
@@ -620,10 +623,6 @@ const steps = [
 	.step p {
 		margin: 0;
 		color: var(--text-muted);
-	}
-
-	.cta-section {
-		padding-top: 0;
 	}
 
 	/* Below 720px: switch the tracker to a vertical timeline */

@@ -1,0 +1,199 @@
+---
+import { faqs } from '../data/site';
+---
+
+<section class="section section-soft">
+	<div class="container faq-grid">
+		<div class="reveal">
+			<span class="eyebrow">FAQ</span>
+			<h2>Common questions</h2>
+			<p>
+				Can’t find what you’re looking for? <a href="/contact">Contact our team</a> and we’ll be
+				happy to help.
+			</p>
+		</div>
+
+		<div class="faq-list reveal">
+			{
+				faqs.map((f, i) => (
+					<details class:list={['faq', { 'is-open': i === 0 }]} open={i === 0}>
+						<summary>
+							{f.q}
+							<span class="faq-icon" aria-hidden="true" />
+						</summary>
+						<div class="faq-body">
+							<p>{f.a}</p>
+						</div>
+					</details>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script>
+	// Animate FAQ items open and closed, keeping only one open at a time.
+	const faqs = document.querySelectorAll<HTMLDetailsElement>('.faq');
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const timing = { duration: 450, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' };
+	const running = new WeakMap<HTMLDetailsElement, Animation[]>();
+
+	function setFaq(faq: HTMLDetailsElement, open: boolean) {
+		const summary = faq.querySelector('summary')!;
+		const body = faq.querySelector<HTMLElement>('.faq-body')!;
+
+		// Start from the current height so interrupting an animation doesn't jump.
+		const startHeight = faq.getBoundingClientRect().height;
+		running.get(faq)?.forEach((a) => a.cancel());
+
+		faq.classList.toggle('is-open', open);
+		if (open) faq.open = true;
+
+		if (reduceMotion) {
+			faq.open = open;
+			return;
+		}
+
+		const borders = faq.offsetHeight - faq.clientHeight;
+		const endHeight = open ? faq.offsetHeight : summary.offsetHeight + borders;
+
+		faq.style.overflow = 'hidden';
+		const animation = faq.animate({ height: [`${startHeight}px`, `${endHeight}px`] }, timing);
+		const fade = body.animate(
+			{
+				opacity: open ? [0, 1] : [1, 0],
+				transform: open ? ['translateY(-8px)', 'none'] : ['none', 'translateY(-8px)'],
+			},
+			timing,
+		);
+		running.set(faq, [animation, fade]);
+
+		animation.onfinish = () => {
+			if (!open) faq.open = false;
+			faq.style.overflow = '';
+		};
+	}
+
+	faqs.forEach((faq) => {
+		faq.querySelector('summary')!.addEventListener('click', (event) => {
+			event.preventDefault();
+			const opening = !faq.classList.contains('is-open');
+			setFaq(faq, opening);
+			if (opening) {
+				faqs.forEach((other) => {
+					if (other !== faq && other.classList.contains('is-open')) setFaq(other, false);
+				});
+			}
+		});
+	});
+</script>
+
+<style>
+	.faq-grid {
+		display: grid;
+		grid-template-columns: 1fr 1.6fr;
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.faq-grid h2 {
+		font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+		margin: 0 0 1rem;
+	}
+
+	.faq-grid > div > p {
+		color: var(--text-muted);
+	}
+
+	.faq-grid a {
+		color: var(--accent);
+		font-weight: 600;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.faq {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		transition:
+			border-color 0.45s var(--ease-smooth),
+			box-shadow 0.45s var(--ease-smooth);
+	}
+
+	.faq:hover {
+		border-color: #b5d4f4;
+	}
+
+	.faq.is-open {
+		border-color: var(--accent);
+		box-shadow: 0 10px 30px rgba(31, 122, 224, 0.1);
+	}
+
+	.faq summary {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		padding: 1.25rem 1.5rem;
+		font-weight: 600;
+		color: var(--navy);
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.faq summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-icon {
+		position: relative;
+		flex-shrink: 0;
+		width: 14px;
+		height: 14px;
+	}
+
+	.faq-icon::before,
+	.faq-icon::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		background: var(--accent);
+		transition: transform 0.45s var(--ease-smooth);
+	}
+
+	.faq-icon::after {
+		transform: rotate(90deg);
+	}
+
+	/* The plus turns into a minus while spinning a half turn */
+	.faq.is-open .faq-icon::before {
+		transform: rotate(180deg);
+	}
+
+	.faq.is-open .faq-icon::after {
+		transform: rotate(180deg);
+	}
+
+	.faq-body {
+		padding: 0 1.5rem 1.25rem;
+	}
+
+	.faq p {
+		margin: 0;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 900px) {
+		.faq-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+	}
+</style>

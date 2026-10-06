@@ -17,6 +17,41 @@ export const navLinks = [
 	{ href: '/contact', label: 'Contact' },
 ];
 
+export const faqs = [
+	{
+		q: 'What kind of products do you deal in?',
+		a: 'We source and supply a wide range of high-quality Indian products based on client requirements. Our focus is on reliable sourcing, consistent quality, and competitive pricing.',
+	},
+	{
+		q: 'Can you help me find specific products from India?',
+		a: 'Yes, we specialize in product sourcing. Share your requirements, and we’ll identify the right manufacturers, negotiate pricing, and manage the entire process for you.',
+	},
+	{
+		q: 'Do you handle the complete export process?',
+		a: 'Absolutely. From sourcing and quality checks to documentation, customs clearance, and shipping—we manage everything end-to-end.',
+	},
+	{
+		q: 'How do you ensure product quality?',
+		a: 'We work with verified suppliers and follow strict quality checks before shipment to ensure everything meets agreed standards.',
+	},
+	{
+		q: 'How can I clean or maintain the product?',
+		a: 'Simply follow the instructions included in the packaging or on our website. It’s easy to use and requires no special tools or skills.',
+	},
+	{
+		q: 'Do you ship internationally?',
+		a: 'Yes, we export to multiple countries worldwide and ensure smooth logistics and delivery to your destination.',
+	},
+	{
+		q: 'Can I customize my order?',
+		a: 'Yes, customization is possible depending on the product. We coordinate with suppliers to meet your specific requirements.',
+	},
+	{
+		q: 'Why should I choose your company?',
+		a: 'We focus on transparency, reliability, and long-term partnerships—ensuring you get the right products, at the right price, delivered on time.',
+	},
+];
+
 export type IconName = 'globe' | 'ship' | 'shield' | 'box' | 'search' | 'chart';
 
 export const services: {
