@@ -51,12 +51,26 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 	onScroll();
 	window.addEventListener('scroll', onScroll, { passive: true });
 
+	const setMenu = (open: boolean) => {
+		toggle?.setAttribute('aria-expanded', String(open));
+		toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+		nav?.classList.toggle('open', open);
+		document.documentElement.classList.toggle('menu-open', open);
+	};
+
 	toggle?.addEventListener('click', () => {
-		const open = toggle.getAttribute('aria-expanded') === 'true';
-		toggle.setAttribute('aria-expanded', String(!open));
-		toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
-		nav?.classList.toggle('open', !open);
-		document.body.classList.toggle('menu-open', !open);
+		setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+	});
+
+	// Close the menu with Escape, or if the screen widens past the mobile layout.
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && nav?.classList.contains('open')) {
+			setMenu(false);
+			toggle?.focus();
+		}
+	});
+	window.matchMedia('(min-width: 821px)').addEventListener('change', (event) => {
+		if (event.matches) setMenu(false);
 	});
 </script>
 

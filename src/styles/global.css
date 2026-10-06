@@ -42,7 +42,10 @@ body {
 	display: none !important;
 }
 
-body.menu-open {
+/* Lock page scroll while the mobile menu is open. This must go on <html>, not
+   <body>: overflow on <body> turns it into its own scroll box, which makes the
+   sticky header jump back to the top of the page, out of view. */
+html.menu-open {
 	overflow: hidden;
 }
 

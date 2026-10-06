@@ -61,10 +61,12 @@ const pageTitle = title ? `${title} | ${site.name}` : site.name;
 			});
 
 			// Pause smooth scrolling while the mobile menu is open.
+			const root = document.documentElement;
 			new MutationObserver(() => {
-				if (document.body.classList.contains('menu-open')) lenis.stop();
-				else lenis.start();
-			}).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+				const menuOpen = root.classList.contains('menu-open');
+				if (menuOpen && !lenis.isStopped) lenis.stop();
+				else if (!menuOpen && lenis.isStopped) lenis.start();
+			}).observe(root, { attributes: true, attributeFilter: ['class'] });
 		</script>
 
 		<script>
