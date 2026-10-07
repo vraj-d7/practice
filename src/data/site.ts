@@ -14,7 +14,7 @@ export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
 // TODO: replace each "#" with the company's profile address.
 export const socialLinks = [
 	{ label: 'Twitter', icon: 'twitter', href: '#' },
-	{ label: 'Instagram', icon: 'instagram', href: '#' },
+	{ label: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/edgeglobaltrade' },
 	{ label: 'LinkedIn', icon: 'linkedin', href: '#' },
 	{ label: 'Facebook', icon: 'facebook', href: '#' },
 ] as const;
