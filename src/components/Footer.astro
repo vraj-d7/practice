@@ -1,5 +1,6 @@
 ---
-import { navLinks, services, site } from '../data/site';
+import SocialLinks from './SocialLinks.astro';
+import { navLinks, services, site, telHref } from '../data/site';
 
 const year = new Date().getFullYear();
 ---
@@ -9,6 +10,9 @@ const year = new Date().getFullYear();
 		<div class="footer-brand reveal" style="--i: 0">
 			<a href="/" class="footer-logo">{site.name}</a>
 			<p>{site.description}</p>
+			<div class="footer-social">
+				<SocialLinks tone="dark" />
+			</div>
 		</div>
 
 		<div class="reveal" style="--i: 1">
@@ -41,8 +45,14 @@ const year = new Date().getFullYear();
 			<h4>Contact</h4>
 			<ul>
 				<li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-				<li>{site.phone}</li>
-				<li>{site.address}</li>
+				{
+					site.phones.map((phone) => (
+						<li>
+							<a href={telHref(phone)}>{phone}</a>
+						</li>
+					))
+				}
+				<li>{site.hours}</li>
 			</ul>
 		</div>
 	</div>
@@ -81,6 +91,10 @@ const year = new Date().getFullYear();
 		margin: 0;
 	}
 
+	.footer-social {
+		margin-top: 1.5rem;
+	}
+
 	h4 {
 		color: #fff;
 		font-size: 0.95rem;
@@ -114,17 +128,8 @@ const year = new Date().getFullYear();
 		margin: 0;
 	}
 
+	/* Tablets and phones: one column, stacked top to bottom */
 	@media (max-width: 820px) {
-		.footer-grid {
-			grid-template-columns: 1fr 1fr;
-		}
-
-		.footer-brand {
-			grid-column: 1 / -1;
-		}
-	}
-
-	@media (max-width: 480px) {
 		.footer-grid {
 			grid-template-columns: 1fr;
 		}

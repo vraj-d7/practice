@@ -1,14 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
-import { services, site } from '../data/site';
+import SocialLinks from '../components/SocialLinks.astro';
+import { services, site, telHref } from '../data/site';
 
+// Each detail shows one or more lines; lines with an href are links.
 const details = [
-	{ icon: 'mail', label: 'Email', value: site.email, href: `mailto:${site.email}` },
-	{ icon: 'phone', label: 'Phone', value: site.phone, href: `tel:${site.phone.replace(/\s/g, '')}` },
-	{ icon: 'pin', label: 'Office', value: site.address },
-	{ icon: 'clock', label: 'Hours', value: site.hours },
-] as const;
+	{ icon: 'mail', label: 'Email', lines: [{ text: site.email, href: `mailto:${site.email}` }] },
+	{
+		icon: 'phone',
+		label: 'Phone',
+		lines: site.phones.map((phone) => ({ text: phone, href: telHref(phone) })),
+	},
+	{ icon: 'clock', label: 'Hours', lines: [{ text: site.hours }] },
+] as const satisfies {
+	icon: 'mail' | 'phone' | 'clock';
+	label: string;
+	lines: readonly { text: string; href?: string }[];
+}[];
 ---
 
 <Layout
@@ -38,12 +47,23 @@ const details = [
 								</span>
 								<div>
 									<small>{d.label}</small>
-									{'href' in d ? <a href={d.href}>{d.value}</a> : <span>{d.value}</span>}
+									{d.lines.map((line) =>
+										'href' in line ? (
+											<a href={line.href}>{line.text}</a>
+										) : (
+											<span>{line.text}</span>
+										),
+									)}
 								</div>
 							</li>
 						))
 					}
 				</ul>
+
+				<div class="follow">
+					<small>Follow us</small>
+					<SocialLinks />
+				</div>
 			</aside>
 
 			<div class="form-card reveal">
@@ -215,14 +235,24 @@ const details = [
 		font-size: 0.8rem;
 	}
 
-	.contact-info a,
-	.contact-info span {
+	/* One line per value, so the three phone numbers stack */
+	.contact-info li a,
+	.contact-info li span:not(.info-icon) {
+		display: block;
 		font-weight: 600;
 		color: var(--navy);
 		word-break: break-word;
 	}
 
-	.contact-info a:hover {
+	.follow {
+		margin-top: 1.75rem;
+	}
+
+	.follow small {
+		margin-bottom: 0.75rem;
+	}
+
+	.contact-info li a:hover {
 		color: var(--accent);
 	}
 

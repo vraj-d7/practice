@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import CtaBanner from '../components/CtaBanner.astro';
+import ApproachTabs from '../components/ApproachTabs.astro';
+import sourcingPhoto from '../assets/approach/sourcing-port.webp';
+import inspectionPhoto from '../assets/approach/inspection-checking.webp';
+import documentationPhoto from '../assets/approach/documentation-signing.webp';
+import deliveryPhoto from '../assets/approach/delivery-courier.webp';
 import type { IconName } from '../data/site';
 
 const values: { icon: IconName; title: string; text: string }[] = [
@@ -43,6 +48,30 @@ const values: { icon: IconName; title: string; text: string }[] = [
 		</div>
 	</section>
 
+	<section class="section section-soft">
+		<div class="container">
+			<div class="section-head reveal">
+				<span class="eyebrow">Our values</span>
+				<h2>What guides our work</h2>
+				<p>The principles behind every shipment, every partnership, and every conversation.</p>
+			</div>
+
+			<div class="values-grid">
+				{
+					values.map((v) => (
+						<div class="card reveal">
+							<div class="icon-box">
+								<Icon name={v.icon} />
+							</div>
+							<h3>{v.title}</h3>
+							<p>{v.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
 	<section class="section">
 		<div class="container story-grid">
 			<div class="reveal">
@@ -80,56 +109,38 @@ const values: { icon: IconName; title: string; text: string }[] = [
 		</div>
 	</section>
 
-	<section class="section section-soft">
-		<div class="container">
-			<div class="section-head reveal">
-				<span class="eyebrow">Our values</span>
-				<h2>What guides our work</h2>
-				<p>The principles behind every shipment, every partnership, and every conversation.</p>
-			</div>
-
-			<div class="values-grid">
-				{
-					values.map((v) => (
-						<div class="card reveal">
-							<div class="icon-box">
-								<Icon name={v.icon} />
-							</div>
-							<h3>{v.title}</h3>
-							<p>{v.text}</p>
-						</div>
-					))
-				}
-			</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="container approach reveal">
-			<div>
-				<span class="eyebrow">Our approach</span>
-				<h2>Partnership, not just paperwork</h2>
-			</div>
-			<ul class="approach-list">
-				<li>
-					<Icon name="check" size={20} />
-					<span>We take time to understand your products, customers, and goals.</span>
-				</li>
-				<li>
-					<Icon name="check" size={20} />
-					<span>We recommend practical routes and partners that fit your budget.</span>
-				</li>
-				<li>
-					<Icon name="check" size={20} />
-					<span>We stay in touch throughout, with one point of contact for your account.</span>
-				</li>
-				<li>
-					<Icon name="check" size={20} />
-					<span>We review every shipment to keep improving speed and cost.</span>
-				</li>
-			</ul>
-		</div>
-	</section>
+	<ApproachTabs
+		eyebrow="Our approach"
+		title="Our systematic approach ensures quality at every step"
+		interval={10}
+		soft
+		steps={[
+			{
+				name: 'Sourcing',
+				photo: sourcingPhoto,
+				text: 'We partner only with reliable and well-established manufacturers, ensuring that every product meets high-quality standards, consistency, and international requirements.',
+				icon: 'search',
+			},
+			{
+				name: 'Inspection',
+				photo: inspectionPhoto,
+				text: 'Each product undergoes rigorous quality checks at multiple stages—during manufacturing and prior to shipment—to guarantee durability, safety, and superior performance.',
+				icon: 'shield',
+			},
+			{
+				name: 'Documentation',
+				photo: documentationPhoto,
+				text: 'We ensure full adherence to all export-import regulations, managing licenses, certifications, and documentation smoothly for hassle-free international trade.',
+				icon: 'file',
+			},
+			{
+				name: 'Delivery',
+				photo: deliveryPhoto,
+				text: 'Products are packed using safe and durable packaging methods to prevent damage, ensuring efficient logistics and on-time delivery to your destination worldwide.',
+				icon: 'ship',
+			},
+		]}
+	/>
 
 	<CtaBanner
 		title="Let’s build something global together"
@@ -146,8 +157,7 @@ const values: { icon: IconName; title: string; text: string }[] = [
 		align-items: center;
 	}
 
-	.story-grid h2,
-	.approach h2 {
+	.story-grid h2 {
 		font-size: clamp(1.8rem, 3.5vw, 2.4rem);
 		margin: 0 0 1.25rem;
 	}
@@ -207,45 +217,6 @@ const values: { icon: IconName; title: string; text: string }[] = [
 		color: var(--text-muted);
 	}
 
-	.approach {
-		display: grid;
-		grid-template-columns: 1fr 1.3fr;
-		gap: 4rem;
-		align-items: start;
-	}
-
-	.approach-list {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: grid;
-		gap: 1rem;
-	}
-
-	.approach-list li {
-		display: flex;
-		gap: 1rem;
-		align-items: flex-start;
-		padding: 1.25rem 1.5rem;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		font-size: 1.05rem;
-		transition:
-			border-color 0.2s,
-			transform 0.2s;
-	}
-
-	.approach-list li:hover {
-		border-color: var(--accent);
-		transform: translateX(4px);
-	}
-
-	.approach-list :global(svg) {
-		flex-shrink: 0;
-		color: var(--accent);
-		margin-top: 3px;
-	}
-
 	@media (max-width: 1000px) {
 		.values-grid {
 			grid-template-columns: repeat(2, 1fr);
@@ -253,8 +224,7 @@ const values: { icon: IconName; title: string; text: string }[] = [
 	}
 
 	@media (max-width: 900px) {
-		.story-grid,
-		.approach {
+		.story-grid {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;
 		}

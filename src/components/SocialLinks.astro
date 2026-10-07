@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+import { site, socialLinks } from '../data/site';
+
+interface Props {
+	/** 'dark' for use on the navy footer */
+	tone?: 'light' | 'dark';
+}
+
+const { tone = 'light' } = Astro.props;
+---
+
+<ul class:list={['social', tone]}>
+	{
+		socialLinks.map((link) => (
+			<li>
+				<a
+					href={link.href}
+					aria-label={`${site.name} on ${link.label}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<Icon name={link.icon} size={18} />
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.social {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.social a {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		transition:
+			background 0.25s var(--ease-smooth),
+			color 0.25s var(--ease-smooth),
+			border-color 0.25s var(--ease-smooth),
+			transform 0.25s var(--ease-smooth);
+	}
+
+	.social a:hover {
+		transform: translateY(-2px);
+	}
+
+	/* On white backgrounds */
+	.light a {
+		border: 1px solid var(--border);
+		background: #fff;
+		color: var(--accent);
+	}
+
+	.light a:hover {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: #fff;
+	}
+
+	/* On the navy footer */
+	.dark a {
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.dark a:hover {
+		background: #fff;
+		border-color: #fff;
+		color: var(--navy);
+	}
+</style>

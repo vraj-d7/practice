@@ -1,14 +1,23 @@
 // Company details used across the site.
-// TODO: replace the placeholder contact details with the real ones.
 export const site = {
 	name: 'Edge Global Trade',
 	description:
 		'Edge Global Trade helps businesses source, ship, and sell goods across international markets.',
-	email: 'hello@example.com',
-	phone: '+00 000 000 0000',
-	address: 'Office address goes here',
-	hours: 'Monday – Friday, 9:00 – 18:00',
+	email: 'info@edgeglobaltrade.com',
+	phones: ['+91 99045 72003', '+1 (416) 417-3060', '+1 (780) 264-1788'],
+	hours: 'Monday – Saturday, 9am – 5pm',
 };
+
+/** "tel:" link for a phone number, keeping only the digits and the leading "+" */
+export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
+
+// TODO: replace each "#" with the company's profile address.
+export const socialLinks = [
+	{ label: 'Twitter', icon: 'twitter', href: '#' },
+	{ label: 'Instagram', icon: 'instagram', href: '#' },
+	{ label: 'LinkedIn', icon: 'linkedin', href: '#' },
+	{ label: 'Facebook', icon: 'facebook', href: '#' },
+] as const;
 
 export const navLinks = [
 	{ href: '/', label: 'Home' },

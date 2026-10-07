@@ -376,6 +376,10 @@ const steps = [
 		font-size: 0.9rem;
 		font-weight: 600;
 		color: var(--navy);
+		/* Draw each tag once as its own layer and slide that, so the text moves smoothly
+		   with the box instead of being redrawn (and jittering) at every position */
+		will-change: transform;
+		backface-visibility: hidden;
 	}
 
 	.float-card :global(svg) {
@@ -462,8 +466,12 @@ const steps = [
 	}
 
 	@keyframes float {
+		0%,
+		100% {
+			transform: translate3d(0, 0, 0);
+		}
 		50% {
-			transform: translateY(-8px);
+			transform: translate3d(0, -8px, 0);
 		}
 	}
 
@@ -733,9 +741,34 @@ const steps = [
 		}
 	}
 
-	@media (max-width: 900px) {
-		.hero-grid,
+	/* Up to 1280px there isn't room for the text and cards side by side: the text is
+	   centred on top, with the cards two by two below it */
+	@media (max-width: 1280px) {
 		.why-grid {
+			grid-template-columns: 1fr;
+			gap: 3rem;
+		}
+
+		.why-copy {
+			text-align: center;
+		}
+
+		.why-copy p {
+			max-width: 640px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.why-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			width: 100%;
+			max-width: 880px;
+			margin: 0 auto;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.hero-grid {
 			grid-template-columns: 1fr;
 			gap: 3rem;
 		}

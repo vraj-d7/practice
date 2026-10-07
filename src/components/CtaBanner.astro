@@ -112,6 +112,9 @@ const photos = [
 		overflow: hidden;
 		box-shadow: 0 14px 34px rgba(15, 42, 74, 0.16);
 		opacity: 0;
+		/* Slide a ready-drawn layer so the floating motion stays smooth */
+		will-change: transform;
+		backface-visibility: hidden;
 	}
 
 	.cta-photo :global(img) {
@@ -165,49 +168,29 @@ const photos = [
 	@keyframes cta-photo-float {
 		0%,
 		100% {
-			transform: translateY(0);
+			transform: translate3d(0, 0, 0);
 		}
 		50% {
-			transform: translateY(-10px);
+			transform: translate3d(0, -10px, 0);
 		}
 	}
 
-	/* Smaller screens: there's no room beside the text, so the photos sit in a row above it */
+	/* Smaller screens: there's no room beside the text, so the photos are hidden and
+	   just the text and grid show */
 	@media (max-width: 960px) {
 		.cta-band {
-			flex-direction: column;
 			min-height: 0;
 			padding: 0;
+		}
+
+		.cta-photos {
+			display: none;
 		}
 
 		/* A smaller grid area so it stays around the text on narrow screens */
 		.cta-content::before {
 			inset: -2.5rem -1.25rem;
 			background-size: 36px 36px;
-		}
-
-		.cta-photos {
-			display: flex;
-			justify-content: center;
-			gap: 0.75rem;
-			width: 100%;
-			margin-bottom: 2rem;
-		}
-
-		/* Four equal photos that shrink to fit the row, up to 120px each */
-		.cta-photo {
-			position: relative;
-			inset: auto;
-			flex: 1 1 0;
-			min-width: 0;
-			width: auto;
-			max-width: 120px;
-			border-radius: 14px;
-		}
-
-		/* A gentle up-and-down stagger so the row isn't flat */
-		.cta-photo:nth-child(even) {
-			margin-top: 1.25rem;
 		}
 	}
 </style>
