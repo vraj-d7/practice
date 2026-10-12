@@ -37,7 +37,7 @@ export const faqs = [
 	},
 	{
 		q: 'Do you handle the complete export process?',
-		a: 'Absolutely. From sourcing and quality checks to documentation, customs clearance, and shipping—we manage everything end-to-end.',
+		a: 'Absolutely. From sourcing and quality checks to documentation, customs clearance, and shipping, we manage everything end-to-end.',
 	},
 	{
 		q: 'How do you ensure product quality?',
@@ -57,7 +57,7 @@ export const faqs = [
 	},
 	{
 		q: 'Why should I choose your company?',
-		a: 'We focus on transparency, reliability, and long-term partnerships—ensuring you get the right products, at the right price, delivered on time.',
+		a: 'We focus on transparency, reliability, and long-term partnerships, ensuring you get the right products, at the right price, delivered on time.',
 	},
 ];
 
