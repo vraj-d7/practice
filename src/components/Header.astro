@@ -1,10 +1,16 @@
 ---
 import { navLinks, site } from '../data/site';
 
+interface Props {
+	/** Sit transparently over the page's top section (white text), until scrolled */
+	overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="site-header" id="site-header">
+<header class:list={['site-header', { overlay }]} id="site-header">
 	<div class="container header-inner">
 		<a href="/" class="logo" aria-label={`${site.name} home`}>
 			<span class="logo-mark">E</span>
@@ -47,7 +53,9 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 	const toggle = document.getElementById('menu-toggle');
 	const nav = document.getElementById('site-nav');
 
-	const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+	// Once scrolled down a little, the header gets its white background back (this is
+	// also what turns the transparent Home page header solid).
+	const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 40);
 	onScroll();
 	window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -82,13 +90,81 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 		background: #fff;
 		border-bottom: 1px solid transparent;
 		transition:
-			box-shadow 0.25s,
-			border-color 0.25s;
+			background-color 0.35s var(--ease-smooth),
+			box-shadow 0.35s var(--ease-smooth),
+			border-color 0.35s var(--ease-smooth);
 	}
 
 	.site-header.scrolled {
 		border-color: var(--border);
 		box-shadow: 0 4px 20px rgba(15, 42, 74, 0.06);
+	}
+
+	/* Overlay header (Home page): floats over the video, transparent with white text.
+	   It turns back into the normal white header once scrolled, or when the mobile
+	   menu is open. */
+	.site-header.overlay {
+		position: fixed;
+		left: 0;
+		right: 0;
+	}
+
+	.site-header.overlay:not(.scrolled) {
+		background: transparent;
+	}
+
+	:global(html.menu-open) .site-header.overlay {
+		background: #fff;
+	}
+
+	.site-header.overlay:not(.scrolled) .logo,
+	.site-header.overlay:not(.scrolled) .logo-text {
+		color: #fff;
+	}
+
+	.site-header.overlay:not(.scrolled) .logo-mark {
+		background: #fff;
+		color: var(--navy);
+	}
+
+	.site-header.overlay:not(.scrolled) .menu-toggle span {
+		background: #fff;
+	}
+
+	:global(html.menu-open) .site-header.overlay .logo {
+		color: var(--navy);
+	}
+
+	:global(html.menu-open) .site-header.overlay .logo-mark {
+		background: var(--navy);
+		color: #fff;
+	}
+
+	:global(html.menu-open) .site-header.overlay .menu-toggle span {
+		background: var(--navy);
+	}
+
+	.logo,
+	.logo-mark,
+	.nav-link,
+	.menu-toggle span {
+		transition:
+			color 0.35s var(--ease-smooth),
+			background-color 0.35s var(--ease-smooth),
+			transform 0.25s,
+			opacity 0.25s;
+	}
+
+	/* Desktop links over the video (on mobile they live in the white menu panel) */
+	@media (min-width: 821px) {
+		.site-header.overlay:not(.scrolled) .nav-link {
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		.site-header.overlay:not(.scrolled) .nav-link:hover,
+		.site-header.overlay:not(.scrolled) .nav-link.active {
+			color: #fff;
+		}
 	}
 
 	.header-inner {

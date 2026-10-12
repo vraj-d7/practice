@@ -38,17 +38,34 @@ const steps = [
 ---
 
 <Layout
+	headerOverlay
 	fullTitle="Edge Global Trade | Import & Export from India"
 	description="Edge Global Trade is an import and export company sourcing quality industrial products from India and worldwide for international buyers, with inspection, documentation, and delivery handled end to end."
 >
 	<section class="hero">
+		<!-- Background video, with a dark gradient over it so the text stays readable -->
+		<div class="hero-media" aria-hidden="true">
+			<video
+				class="hero-video"
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="auto"
+				poster="/videos/hero-poster.webp"
+				data-hero-video
+			>
+				<source src="/videos/hero.mp4" type="video/mp4" />
+			</video>
+		</div>
+
 		<div class="container hero-grid">
 			<div class="hero-copy">
 				<span class="eyebrow">International trade, simplified</span>
 				<h1>Your Trusted business partner for <span class="highlight">global trade</span></h1>
 				<p>
 					Edge Global Trade helps companies source products, move goods across borders, and
-					reach new customers worldwide — with one reliable partner managing every step.
+					reach new customers worldwide, with one reliable partner managing every step.
 				</p>
 				<div class="hero-actions">
 					<a href="/contact" class="btn btn-primary">
@@ -198,17 +215,65 @@ const steps = [
 	/>
 </Layout>
 
+<script>
+	// Hero background video: show the still poster instead for visitors who prefer
+	// reduced motion, and pause while the hero is scrolled off-screen to save battery.
+	const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+	if (video) {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			video.removeAttribute('autoplay');
+			video.pause();
+		} else {
+			new IntersectionObserver(([entry]) => {
+				if (entry.isIntersecting) video.play().catch(() => {});
+				else video.pause();
+			}).observe(video);
+		}
+	}
+</script>
+
 <style>
 	.hero {
 		position: relative;
 		overflow: hidden;
+		/* Shown behind the video while it loads */
+		background: var(--navy);
+		/* Extra 72px on top: the header floats over this section */
+		padding: calc(7rem + 72px) 0 7.5rem;
+	}
+
+	/* Video fills the whole hero, cropped to cover it */
+	.hero-media {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+	}
+
+	.hero-video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Gradient over the video: darkest on the left behind the text and at the bottom,
+	   lighter towards the top right so the footage still shows through */
+	.hero-media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
 		background:
-			radial-gradient(circle at 85% 20%, rgba(31, 122, 224, 0.12), transparent 45%),
-			linear-gradient(180deg, #fff 0%, var(--bg-soft) 100%);
-		padding: 5.5rem 0 6rem;
+			linear-gradient(
+				90deg,
+				rgba(8, 20, 38, 0.82) 0%,
+				rgba(8, 20, 38, 0.55) 45%,
+				rgba(8, 20, 38, 0.25) 100%
+			),
+			linear-gradient(180deg, rgba(8, 20, 38, 0.3) 0%, rgba(8, 20, 38, 0) 35%, rgba(8, 20, 38, 0.8) 100%);
 	}
 
 	.hero-grid {
+		position: relative;
+		z-index: 1;
 		display: grid;
 		grid-template-columns: 1.1fr 1fr;
 		gap: 4rem;
@@ -218,10 +283,15 @@ const steps = [
 	.hero h1 {
 		font-size: clamp(2.4rem, 5vw, 3.6rem);
 		margin: 0 0 1.25rem;
+		color: #fff;
+	}
+
+	.hero .eyebrow {
+		color: #8cc2ff;
 	}
 
 	.highlight {
-		color: var(--accent);
+		color: #8cc2ff;
 	}
 
 	/* Page-load entrance: the label, headline, intro, and buttons rise in one after another */
@@ -244,7 +314,7 @@ const steps = [
 
 	.hero-copy p {
 		font-size: 1.15rem;
-		color: var(--text-muted);
+		color: rgba(255, 255, 255, 0.85);
 		max-width: 540px;
 		margin: 0 0 2.25rem;
 	}
@@ -255,14 +325,17 @@ const steps = [
 		gap: 1rem;
 	}
 
+	/* Outlined white button, for the dark video background */
 	.btn-ghost {
-		border-color: var(--border);
-		color: var(--navy);
-		background: #fff;
+		border-color: rgba(255, 255, 255, 0.6);
+		color: #fff;
+		background: transparent;
 	}
 
 	.btn-ghost:hover {
-		border-color: var(--navy);
+		border-color: #fff;
+		background: #fff;
+		color: var(--navy);
 	}
 
 	/* Hero visual */
@@ -783,7 +856,7 @@ const steps = [
 
 	@media (max-width: 600px) {
 		.hero {
-			padding: 3.5rem 0 4.5rem;
+			padding: calc(3.5rem + 72px) 0 4.5rem;
 		}
 
 		.why-item:nth-child(even) {

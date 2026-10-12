@@ -10,10 +10,12 @@ interface Props {
 	title?: string;
 	/** Use this exact text as the page title instead */
 	fullTitle?: string;
+	/** Header floats transparently over the page's top section (Home page video) */
+	headerOverlay?: boolean;
 	description?: string;
 }
 
-const { title, fullTitle, description = site.description } = Astro.props;
+const { title, fullTitle, description = site.description, headerOverlay = false } = Astro.props;
 const pageTitle = fullTitle ?? (title ? `${title} | ${site.name}` : site.name);
 
 // The one official address for this page: always https://edgeglobaltrade.com (never www),
@@ -94,7 +96,7 @@ const structuredData = {
 	</head>
 	<body>
 		<a href="#main" class="skip-link">Skip to content</a>
-		<Header />
+		<Header overlay={headerOverlay} />
 		<main id="main">
 			<slot />
 		</main>
