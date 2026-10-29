@@ -57,9 +57,17 @@ const year = new Date().getFullYear();
 	</div>
 
 	<div class="container footer-bottom reveal" style="--i: 4">
-		<p>&copy; {year} {site.name}. All rights reserved.</p>
+		<p>&copy; <span data-current-year>{year}</span> {site.name}. All rights reserved.</p>
 	</div>
 </footer>
+
+<script>
+	// The year above is the year the site was last built. Swap in the visitor's current
+	// year, so the copyright moves to 2027 on its own without needing a rebuild.
+	document.querySelectorAll('[data-current-year]').forEach((el) => {
+		el.textContent = String(new Date().getFullYear());
+	});
+</script>
 
 <style>
 	/* Clip so the items sliding up into place can't stretch the page below the footer */
