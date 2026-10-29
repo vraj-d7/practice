@@ -6,6 +6,10 @@ export const site = {
 	email: 'info@edgeglobaltrade.com',
 	phones: ['+91 99045 72003', '+1 (416) 417-3060', '+1 (780) 264-1788'],
 	hours: 'Monday – Saturday, 9am – 5pm',
+	// Web3Forms access key for the contact form (free, from https://web3forms.com).
+	// Messages are delivered to info@edgeglobaltrade.com, the inbox the key was created
+	// with. It's safe to keep in the site code: it can only send messages to that inbox.
+	formAccessKey: '523d025e-1b6b-44b6-be34-b6789c54cd90',
 };
 
 /** "tel:" link for a phone number, keeping only the digits and the leading "+" */
