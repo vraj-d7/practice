@@ -22,7 +22,9 @@ const pageTitle = fullTitle ?? (title ? `${title} | ${site.name}` : site.name);
 // with a trailing slash, since that's the address the live site serves (/about → /about/)
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(path, Astro.site).href;
-const shareImage = new URL('/og-image.png', Astro.site).href;
+// "?v=2": bump this number whenever og-image.png changes, so WhatsApp, LinkedIn, etc.
+// fetch the new image instead of reusing the one they saved
+const shareImage = new URL('/og-image.png?v=2', Astro.site).href;
 
 // Tells search engines who the business is: name, logo, contact details, and profiles
 const structuredData = {
